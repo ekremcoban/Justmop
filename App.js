@@ -28,26 +28,34 @@ const App: () => React$Node = () => {
   const [cards, setCards] = useState(null);
 
   useEffect(() => {
-    getCards();
+    async function sencron() {
+      await getCards();
+      await convertData();
+    }
+    sencron();
   }, [])
 
-  const getCards = () => {
-    fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
+  const getCards = async () => {
+    console.log("getCards")
+    const response = await fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
       "method": "GET",
       "headers": {
         "x-rapidapi-host": "omgvamp-hearthstone-v1.p.rapidapi.com",
         "x-rapidapi-key": "c48752c7a3msh90350058008de35p12cfb8jsnc4876ec34fd3"
       }
-    })
-      .then(response => response.json())
-      .then(cards => {
-        console.log(cards)
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).catch(err => {
+      console.log(err);
+    });
 
+    const jSon = await response.json();
+        console.log(jSon)
   }
+
+  const convertData = () => {
+    console.log("convertData")
+    console.log(cards);
+  }
+
   return (
     <>
       <Text>TEST</Text>
