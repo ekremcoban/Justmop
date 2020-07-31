@@ -8,24 +8,18 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  Button,
+  Alert,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import FlatList from './src/components/flatList';
 
 const App: () => React$Node = () => {
-  const [cards, setCards] = useState(null);
+  const [cards, setCards] = useState([]);
+  let mechanics = [];
 
   useEffect(() => {
     async function sencron() {
@@ -36,7 +30,6 @@ const App: () => React$Node = () => {
   }, [])
 
   const getCards = async () => {
-    console.log("getCards")
     const response = await fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
       "method": "GET",
       "headers": {
@@ -47,60 +40,53 @@ const App: () => React$Node = () => {
       console.log(err);
     });
 
-    const jSon = await response.json();
-        console.log(jSon)
+    const json = await response.json();
+    for (const key in json) {
+      if (json.hasOwnProperty(key)) {
+        const element = json[key];
+        mechanics.push(element);
+      }
+    }
   }
 
   const convertData = () => {
+    let tempCards = [];
     console.log("convertData")
-    console.log(cards);
+    for (let i = 0; i < mechanics.length; i++) {
+      for (let j = 0; j < mechanics.length; j++) {
+        if (mechanics[i][j] != null && mechanics[i][j].mechanics != null) {
+          tempCards.push(mechanics[i][j]);
+
+        }
+      }
+    }
+    setCards(tempCards);
+    console.log(tempCards)
+  }
+
+  const onPress = (item) => {
+    // Alert.alert("ekrem");
+    console.log(item.name)
   }
 
   return (
-    <>
-      <Text>TEST</Text>
-      <Text>{cards}</Text>
-    </>
+    <View style={styles.container}>
+      <FlatList
+        cards={cards}
+        onItemPressed={onPress}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  }
 });
 
 export default App;
