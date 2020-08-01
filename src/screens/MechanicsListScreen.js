@@ -3,6 +3,7 @@ import { StyleSheet, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import FlatList from '../components/flatList';
 import { updateCards } from '../store/actions/index';
+import { SCREEN } from '../Utilities/Text';
 
 const MechanicsListScreen = ( props ) => {
     const [cards, setCards] = useState([]);
@@ -79,12 +80,15 @@ const MechanicsListScreen = ( props ) => {
             }
         }
         // console.log(selectedItem)
-        props.navigation.navigate('CardsListScreen');
+        props.navigation.navigate(SCREEN.CARD_LIST);
         props.onUpdateCards(selectedItem)
     }
 
     return (
         <View style={styles.container}>
+        <Button 
+            title="Search" 
+            onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)}/>
             <FlatList
                 mechanics={mechanics}
                 onItemPressed={onPress}

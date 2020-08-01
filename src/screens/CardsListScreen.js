@@ -30,7 +30,7 @@ const CardsListScreen = (props) => {
                                     uri: item.img,
                                 }}
                                 />
-                            {!item.img && <Text>NOT FOUND ANY PİCTURE</Text>}
+                            {!item.img && <View style={styles.title}><Text>NOT FOUND ANY PİCTURE</Text></View>}
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.cardBack}
