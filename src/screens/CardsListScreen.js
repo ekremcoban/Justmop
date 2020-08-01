@@ -14,70 +14,84 @@ const CardsListScreen = (props) => {
 
 
     console.log(props)
-    console.log(props.cards[0].img)
-    const view = (
-        <CardFlip style={styles.cardContainer} ref={(card) => this.card = card} >
-            <TouchableOpacity
-                style={styles.cardFront}
-                onPress={() => this.card.flip()} >
-                <Image resizeMode="contain"
-                    style={styles.tinyLogo}
-                    source={{
-                        uri: props.cards[0].img,
-                    }}></Image>
-                {!props.cards[0].img && <Text>RESİM BULUNAMADI</Text>}
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.cardBack}
-                onPress={() => this.card.flip()} >
-                <View style={styles.row}>
-                    <View style={styles.left}>
-                        <Text style={styles.textLeft}>artist</Text>
-                        <Text style={styles.textLeft}>cardId</Text>
-                        <Text style={styles.textLeft}>cardSet</Text>
-                        <Text style={styles.textLeft}>flavor</Text>
-                        <Text style={styles.textLeft}>name</Text>
-                    </View>
-                    <View style={styles.right}>
-                        <Text style={styles.textRight}>{props.cards[0].artist}</Text>
-                        <Text style={styles.textRight}>{props.cards[0].cardId}</Text>
-                        <Text style={styles.textRight}>{props.cards[0].cardSet}</Text>
-                        <Text style={styles.textRight}>{props.cards[0].flavor}</Text>
-                        <Text style={styles.textRight}>{props.cards[0].name}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        </CardFlip>
-    )
+
     return (
-        <>
-            {props && view}
-        </>
+        <ScrollView styles={styles.container}>
+            {props.cards.map((item, index) => {
+                return (
+                    <CardFlip key={index} style={styles.cardContainer} ref={(card) => this['card' + index] = card} >
+                        <TouchableOpacity
+                            style={styles.cardFront}
+                            onPress={() => this['card' + index].flip()} >
+                            <View style={styles.title}><Text>Press To Info</Text></View>
+                            <Image resizeMode="contain"
+                                style={styles.tinyLogo}
+                                source={{
+                                    uri: item.img,
+                                }}
+                                />
+                            {!item.img && <Text>NOT FOUND ANY PİCTURE</Text>}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.cardBack}
+                            onPress={() => this['card' + index].flip()} >
+                            <View style={styles.row}>
+                                <View style={styles.left}>
+                                    <Text style={[styles.textLeft, { marginTop: 15, }]}>artist</Text>
+                                    <Text style={styles.textLeft}>cardId</Text>
+                                    <Text style={styles.textLeft}>cardSet</Text>
+                                    <Text style={styles.textLeft}>flavor</Text>
+                                    <Text style={styles.textLeft}>name</Text>
+                                </View>
+                                <View style={styles.right}>
+                                    <Text style={[styles.textRight, { marginTop: 20 }]}>{item.artist}</Text>
+                                    <Text style={styles.textRight}>{item.cardId}</Text>
+                                    <Text style={styles.textRight}>{item.cardSet}</Text>
+                                    <Text style={styles.textRight}>{item.flavor}</Text>
+                                    <Text style={styles.textRight}>{item.name}</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </CardFlip>
+                )
+            })}
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex:1,
+    },
     cardContainer: {
         flex: 1,
+        // marginTop: 20,
+        height: 300,
         padding: 20,
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
     cardFront: {
-        width: 400,
-        height: 350,
-        // backgroundColor: 'red',
+        width: '80%',
+        height: 300,
+        left: '10%',
+        backgroundColor: '#FDFDFD',
     },
     cardBack: {
         width: "80%",
         height: 350,
         left: "10%",
-        backgroundColor: 'red',
+        backgroundColor: '#F0F0F0',
+    },
+    title: {
+        alignItems: 'center',
+        width: '100%',
+        backgroundColor: '#F0F0F0',
     },
     tinyLogo: {
-        width: 400,
-        height: 350,
+        width: 300,
+        height: 250,
         left: "10%",
     },
     row: {
@@ -93,11 +107,11 @@ const styles = StyleSheet.create({
     textLeft: {
         fontSize: 20,
         height: 60,
+        paddingLeft: 10,
     },
     textRight: {
         fontSize: 14,
         height: 60,
-        margintTop:5,
     },
 });
 
