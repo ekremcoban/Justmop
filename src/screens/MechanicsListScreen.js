@@ -66,6 +66,7 @@ const MechanicsListScreen = ( props ) => {
         props.onSaveAllCards(tempCardList);
         setMechanics(uniqueMechanics);
         // console.log(temp)
+        console.log(uniqueMechanics)
     }
 
     const onPress = (item) => {
@@ -91,7 +92,7 @@ const MechanicsListScreen = ( props ) => {
             title="Search" 
             onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)}/>
             <FlatList
-                mechanics={mechanics}
+                data={mechanics}
                 onItemPressed={onPress}
             />
         </View>

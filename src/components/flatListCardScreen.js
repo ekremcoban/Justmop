@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, FlatList } from 'react-native';
 
-import ListItem from './listItem';
+import ListItem from './listItemCardScreen';
 
-const flatList = props => {
+const flatListCardScreen = props => {
     return <FlatList
         style={styles.listContainer}
         data={props.data}
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default flatList;
+export default flatListCardScreen;

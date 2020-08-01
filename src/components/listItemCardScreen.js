@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const listItem = (props) => {
+const listItemCardScreen = (props) => {console.log(props)
     return (
         <TouchableOpacity onPress={props.onItemPressed}>
             <View style={styles.listItem}>
-                <Text>{props.value.item}</Text>
+                <Text>{props.value.item.name}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default listItem;
+export default listItemCardScreen;

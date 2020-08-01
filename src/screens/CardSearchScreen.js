@@ -1,17 +1,54 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
-import { connect } from 'react-redux';
+import FlatList from '../components/flatListCardScreen';
 
 const CardSearchScreen = (props) => {
     const [value, setValue] = useState(null);
+    const [result, setResult] = useState([])
+
+    const getCards = async (name) => {
+        let tempCards = [];
+        const response = await fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/search/" + name, {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "omgvamp-hearthstone-v1.p.rapidapi.com",
+                "x-rapidapi-key": "c48752c7a3msh90350058008de35p12cfb8jsnc4876ec34fd3"
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+        console.log("response", response)
+        const json = await response.json();
+        
+        for (const key in json) {
+            if (json.hasOwnProperty(key)) {
+                const element = json[key];
+                tempCards.push(element);
+            }
+        }
+        if (tempCards.length > 0) {
+            setResult(tempCards);
+        }
+    }
 
     const mySetValue = (text) => {
         console.log(props.allCards);
         setValue(text);
-        let result = props.allCards.find(card => card.name.toLowerCase() === text.toLowerCase());
-        console.log(result);
+        getCards(text);
     }
 
+    const onPress = (item) => {
+        console.log(item);
+    }
+
+    const flat = (
+        <FlatList
+                data={result}
+                onItemPressed={onPress}
+                />
+    )
+console.log("result", result)
     return (
         <>
             <TextInput
@@ -19,6 +56,7 @@ const CardSearchScreen = (props) => {
                 onChangeText={text => mySetValue(text)}
                 value={value}
             />
+            {result.length > 0 && flat}
         </>
     )
 }
@@ -30,11 +68,5 @@ const styles = StyleSheet.create({
         borderWidth: 1 }
 });
 
-const mapStateToProps = state => {
-    return {
-        cards: state.cards.cards,
-        allCards: state.cards.allCards,
-    };
-};
 
-export default connect(mapStateToProps)(CardSearchScreen);
+export default CardSearchScreen;
