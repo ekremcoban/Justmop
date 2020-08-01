@@ -1,5 +1,5 @@
 export const SCREEN = {
-    MECHANICS_LIST: 'MechanicsListScreen',
+    MECHANICS_LIST: 'MechanicsListScreen2',
     CARD_LIST: 'CardsListScreen',
 }
 
