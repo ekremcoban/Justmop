@@ -19,7 +19,7 @@ import FlatList from './src/components/flatList';
 
 const App: () => React$Node = () => {
   const [cards, setCards] = useState([]);
-  let mechanics = [];
+  let tempCards = [];
 
   useEffect(() => {
     async function sencron() {
@@ -44,24 +44,36 @@ const App: () => React$Node = () => {
     for (const key in json) {
       if (json.hasOwnProperty(key)) {
         const element = json[key];
-        mechanics.push(element);
+        tempCards.push(element);
       }
     }
   }
 
   const convertData = () => {
-    let tempCards = [];
+    let temp = [];
+    let tempMechanics = [];
     console.log("convertData")
-    for (let i = 0; i < mechanics.length; i++) {
-      for (let j = 0; j < mechanics.length; j++) {
-        if (mechanics[i][j] != null && mechanics[i][j].mechanics != null) {
-          tempCards.push(mechanics[i][j]);
-
+    for (let i = 0; i < tempCards.length; i++) {
+      for (let j = 0; j < tempCards.length; j++) {
+        if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
+          for (let k = 0; k < tempCards[i][j].mechanics.length; k++) {
+            tempMechanics.push(tempCards[i][j]);
+          }
+          // temp.push(tempCards[i][j]);
+          // console.log(tempCards[i][j])
         }
       }
     }
-    setCards(tempCards);
-    console.log(tempCards)
+
+    // for (let i = 0; i < temp.length; i++) {
+    //     for (let j = 0; j < temp.mechanics.length; j++) {
+                    
+    //     }      
+    // }
+    let unique = [...new Set(tempMechanics)]
+    console.log(unique)
+    setCards(unique);
+    // console.log(temp)
   }
 
   const onPress = (item) => {
