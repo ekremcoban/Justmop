@@ -6,7 +6,7 @@ import ListItem from './listItem';
 const flatList = props => {
     return <FlatList
         style={styles.listContainer}
-        data={props.cards}
+        data={props.mechanics}
         renderItem={(info) => (
             <ListItem
                 value={info.item}

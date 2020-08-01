@@ -19,6 +19,7 @@ import FlatList from './src/components/flatList';
 
 const App: () => React$Node = () => {
   const [cards, setCards] = useState([]);
+  const [mechanics, setMechanics] = useState([]);
   let tempCards = [];
 
   useEffect(() => {
@@ -50,14 +51,15 @@ const App: () => React$Node = () => {
   }
 
   const convertData = () => {
-    let temp = [];
+    let tempCardList = [];
     let tempMechanics = [];
     console.log("convertData")
     for (let i = 0; i < tempCards.length; i++) {
       for (let j = 0; j < tempCards.length; j++) {
         if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
           for (let k = 0; k < tempCards[i][j].mechanics.length; k++) {
-            tempMechanics.push(tempCards[i][j]);
+            tempCardList.push(tempCards[i][j]);
+            tempMechanics.push(tempCards[i][j].mechanics[k].name);
           }
           // temp.push(tempCards[i][j]);
           // console.log(tempCards[i][j])
@@ -70,21 +72,34 @@ const App: () => React$Node = () => {
                     
     //     }      
     // }
-    let unique = [...new Set(tempMechanics)]
-    console.log(unique)
-    setCards(unique);
+    let uniqueMechanics = [...new Set(tempMechanics)]
+    let uniqueCardList = [...new Set(tempCardList)]
+    // console.log(uniqueCardList)
+    setCards(uniqueCardList);
+    setMechanics(uniqueMechanics);
     // console.log(temp)
   }
 
   const onPress = (item) => {
     // Alert.alert("ekrem");
-    console.log(item.name)
+    let selectedItem = [];
+    console.log(item)
+    for (let i = 0; i < cards.length; i++) {
+      if (cards[i] != null && cards[i].mechanics != null) {
+        for (let j = 0; j < cards[i].mechanics.length; j++) {
+          if (cards[i].mechanics[j].name === item) {
+              selectedItem.push(cards[i]);
+          }          
+        }
+      }
+    }
+    console.log(selectedItem)
   }
 
   return (
     <View style={styles.container}>
       <FlatList
-        cards={cards}
+        mechanics={mechanics}
         onItemPressed={onPress}
       />
     </View>
