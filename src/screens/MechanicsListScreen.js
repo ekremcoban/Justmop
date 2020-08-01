@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
+import { connect } from 'react-redux';
 import FlatList from '../components/flatList';
+import { updateCards } from '../store/actions/index';
 
-const MechanicsListScreen = ( { navigation } ) => {
+const MechanicsListScreen = ( props ) => {
     const [cards, setCards] = useState([]);
     const [mechanics, setMechanics] = useState([]);
     let tempCards = [];
@@ -42,8 +44,8 @@ const MechanicsListScreen = ( { navigation } ) => {
         for (let i = 0; i < tempCards.length; i++) {
             for (let j = 0; j < tempCards.length; j++) {
                 if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
+                    tempCardList.push(tempCards[i][j]);
                     for (let k = 0; k < tempCards[i][j].mechanics.length; k++) {
-                        tempCardList.push(tempCards[i][j]);
                         tempMechanics.push(tempCards[i][j].mechanics[k].name);
                     }
                     // temp.push(tempCards[i][j]);
@@ -58,15 +60,13 @@ const MechanicsListScreen = ( { navigation } ) => {
         //     }      
         // }
         let uniqueMechanics = [...new Set(tempMechanics)]
-        let uniqueCardList = [...new Set(tempCardList)]
-        // console.log(uniqueCardList)
-        setCards(uniqueCardList);
+        // console.log(tempCardList)
+        setCards(tempCardList);
         setMechanics(uniqueMechanics);
         // console.log(temp)
     }
 
     const onPress = (item) => {
-        // Alert.alert("ekrem");
         let selectedItem = [];
         console.log(item)
         for (let i = 0; i < cards.length; i++) {
@@ -78,8 +78,9 @@ const MechanicsListScreen = ( { navigation } ) => {
                 }
             }
         }
-        console.log(selectedItem)
-        navigation.navigate('CardsListScreen')
+        // console.log(selectedItem)
+        props.navigation.navigate('CardsListScreen');
+        props.onUpdateCards(selectedItem)
     }
 
     return (
@@ -102,4 +103,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MechanicsListScreen;
+const mapStateToProps = state => {
+    return {
+      cards: state.cards.cards,
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      onUpdateCards: (name) => dispatch(updateCards(name))
+    };
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(MechanicsListScreen);

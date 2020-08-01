@@ -1,0 +1,1 @@
+export const UPDATE_CARDS = 'UPDATE_CARDS';

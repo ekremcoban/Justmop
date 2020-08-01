@@ -1,7 +1,9 @@
 import React from 'react'
 import { Text } from 'react-native';
+import { connect } from 'react-redux';
 
-const CardsListScreen = () => {
+const CardsListScreen = (props) => {
+     console.log(props)
     return (
         <>
             <Text>Detay</Text>
@@ -9,4 +11,10 @@ const CardsListScreen = () => {
     )
 }
 
-export default CardsListScreen;
+const mapStateToProps = state => {
+    return {
+      cards: state.cards.cards,
+    };
+  };
+
+  export default connect(mapStateToProps)(CardsListScreen);
