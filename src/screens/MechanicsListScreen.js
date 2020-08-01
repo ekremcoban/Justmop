@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 import FlatList from '../components/flatList';
-import { updateCards } from '../store/actions/index';
+import { updateCards, saveAllCards } from '../store/actions/index';
 import { SCREEN } from '../Utilities/Text';
 
 const MechanicsListScreen = ( props ) => {
@@ -63,6 +63,7 @@ const MechanicsListScreen = ( props ) => {
         let uniqueMechanics = [...new Set(tempMechanics)]
         // console.log(tempCardList)
         setCards(tempCardList);
+        props.onSaveAllCards(tempCardList);
         setMechanics(uniqueMechanics);
         // console.log(temp)
     }
@@ -110,12 +111,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
       cards: state.cards.cards,
+      allCards: state.cards.allCards,
     };
   };
   
   const mapDispatchToProps = dispatch => {
     return {
-      onUpdateCards: (name) => dispatch(updateCards(name))
+      onUpdateCards: (name) => dispatch(updateCards(name)),
+      onSaveAllCards: (value) => dispatch(saveAllCards(value))
     };
   };
   

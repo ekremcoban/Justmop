@@ -1,4 +1,4 @@
-import { UPDATE_CARDS } from './actionTypes';
+import { UPDATE_CARDS, ALL_CARDS } from './actionTypes';
 
 export const updateCards = (cards) => {
     return {
@@ -6,3 +6,10 @@ export const updateCards = (cards) => {
         cards,
     };
 };
+
+export const saveAllCards = (allCards) => {
+    return {
+        type: ALL_CARDS,
+        allCards,
+    }
+}

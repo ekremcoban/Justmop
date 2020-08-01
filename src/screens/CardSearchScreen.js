@@ -6,8 +6,10 @@ const CardSearchScreen = (props) => {
     const [value, setValue] = useState(null);
 
     const mySetValue = (text) => {
-        console.log(props.cards);
+        console.log(props.allCards);
         setValue(text);
+        let result = props.allCards.find(card => card.name.toLowerCase() === text.toLowerCase());
+        console.log(result);
     }
 
     return (
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         cards: state.cards.cards,
+        allCards: state.cards.allCards,
     };
 };
 

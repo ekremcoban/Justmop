@@ -1,7 +1,8 @@
-import { UPDATE_CARDS } from '../actions/actionTypes';
+import { UPDATE_CARDS, ALL_CARDS } from '../actions/actionTypes';
 
 const initialState = {
     cards: [],
+    allCards: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 cards: action.cards
             };
+        case ALL_CARDS:
+            return {
+                ...state,
+                allCards: action.allCards,
+            }
         default:
             return state;
     }
