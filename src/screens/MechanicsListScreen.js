@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Button, ActivityIndicator, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import FlatListMechanics from '../components/flatListMechanics';
 import { updateCards, saveAllCards } from '../store/actions/index';
@@ -9,11 +9,15 @@ const MechanicsListScreen = (props) => {
     const [cards, setCards] = useState([]);
     const [mechanics, setMechanics] = useState([]);
     const [showSpinner, setShowSpinner] = useState(true);
+    const [showSplashScreen, setSplashScreen] = useState(true);
 
     let tempCards = [];
 
-    useEffect(() => {
+    useEffect(() => { 
         async function sencron() {
+            setTimeout(function(){  
+                setSplashScreen(false);  
+              }, 8000); 
             await getCards();
             await convertData();
         }
@@ -44,6 +48,7 @@ const MechanicsListScreen = (props) => {
     const convertData = () => {
         let tempCardList = [];
         let tempMechanics = [];
+
         for (let i = 0; i < tempCards.length; i++) {
             for (let j = 0; j < tempCards.length; j++) {
                 if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
@@ -64,7 +69,7 @@ const MechanicsListScreen = (props) => {
 
     const onPress = (item) => {
         let selectedItem = [];
-        console.log(item)
+        
         for (let i = 0; i < cards.length; i++) {
             if (cards[i] != null && cards[i].mechanics != null) {
                 for (let j = 0; j < cards[i].mechanics.length; j++) {
@@ -78,6 +83,15 @@ const MechanicsListScreen = (props) => {
         props.navigation.navigate(SCREEN.CARD_LIST);
         props.onUpdateCards(selectedItem)
     }
+
+    const Splash_Screen = (  
+        <View style={styles.SplashScreen_RootView}> 
+        <Text style={{textAlign: 'center', top: 30}}>Data Is Loading...</Text> 
+            <View style={styles.SplashScreen_ChildView}>  
+                  <Image source={{uri:'https://homepages.cae.wisc.edu/~ece533/images/watch.png'}}  
+               style={{width:'100%', height: '100%', resizeMode: 'contain'}} />  
+           </View>  
+        </View> )  
 
     const flatList = (
         <View style={{width: '100%'}}>
@@ -101,7 +115,7 @@ const MechanicsListScreen = (props) => {
 
     return (
         <>
-            {show}
+            { showSplashScreen ? Splash_Screen : show }
         </>
     );
 };
