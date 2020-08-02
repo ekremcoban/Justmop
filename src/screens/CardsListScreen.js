@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     Text, TouchableOpacity, StyleSheet,
     ScrollView, Image, View
@@ -7,14 +7,6 @@ import { connect } from 'react-redux';
 import CardFlip from 'react-native-card-flip';
 
 const CardsListScreen = (props) => {
-
-    useEffect(() => {
-
-    }, []);
-
-
-    console.log(props)
-
     return (
         <ScrollView styles={styles.container}>
             {props.cards.map((item, index) => {
@@ -65,7 +57,6 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         flex: 1,
-        // marginTop: 20,
         height: 300,
         padding: 20,
         justifyContent: 'flex-start',
@@ -82,12 +73,12 @@ const styles = StyleSheet.create({
         width: "80%",
         height: 350,
         left: "10%",
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#F0FFF0',
     },
     title: {
         alignItems: 'center',
         width: '100%',
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#F0FAF0',
     },
     tinyLogo: {
         width: 300,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const listItem = (props) => {
+const listItemMechanics = (props) => {
     return (
         <TouchableOpacity onPress={props.onItemPressed}>
             <View style={styles.listItem}>
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default listItem;
+export default listItemMechanics;

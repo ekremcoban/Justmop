@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import FlatList from '../components/flatListCardScreen';
 
 const CardSearchScreen = (props) => {
@@ -18,7 +18,6 @@ const CardSearchScreen = (props) => {
             console.log(err);
         });
 
-        console.log("response", response)
         const json = await response.json();
         
         for (const key in json) {
@@ -33,7 +32,6 @@ const CardSearchScreen = (props) => {
     }
 
     const mySetValue = (text) => {
-        console.log(props.allCards);
         setValue(text);
         getCards(text);
     }
@@ -48,7 +46,7 @@ const CardSearchScreen = (props) => {
                 onItemPressed={onPress}
                 />
     )
-console.log("result", result)
+    
     return (
         <>
             <TextInput

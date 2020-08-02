@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View, Button, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import FlatList from '../components/flatList';
+import FlatListMechanics from '../components/flatListMechanics';
 import { updateCards, saveAllCards } from '../store/actions/index';
 import { SCREEN } from '../Utilities/Text';
 
@@ -40,10 +40,10 @@ const MechanicsListScreen = (props) => {
         }
     }
 
+    // Finding items that has mechanics item
     const convertData = () => {
         let tempCardList = [];
         let tempMechanics = [];
-        console.log("convertData")
         for (let i = 0; i < tempCards.length; i++) {
             for (let j = 0; j < tempCards.length; j++) {
                 if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
@@ -51,25 +51,15 @@ const MechanicsListScreen = (props) => {
                     for (let k = 0; k < tempCards[i][j].mechanics.length; k++) {
                         tempMechanics.push(tempCards[i][j].mechanics[k].name);
                     }
-                    // temp.push(tempCards[i][j]);
-                    // console.log(tempCards[i][j])
                 }
             }
         }
 
-        // for (let i = 0; i < temp.length; i++) {
-        //     for (let j = 0; j < temp.mechanics.length; j++) {
-
-        //     }      
-        // }
         let uniqueMechanics = [...new Set(tempMechanics)]
-        // console.log(tempCardList)
         setCards(tempCardList);
         props.onSaveAllCards(tempCardList);
         setMechanics(uniqueMechanics);
         setShowSpinner(false);
-        // console.log(temp)
-        console.log(uniqueMechanics)
     }
 
     const onPress = (item) => {
@@ -84,7 +74,7 @@ const MechanicsListScreen = (props) => {
                 }
             }
         }
-        // console.log(selectedItem)
+
         props.navigation.navigate(SCREEN.CARD_LIST);
         props.onUpdateCards(selectedItem)
     }
@@ -94,11 +84,10 @@ const MechanicsListScreen = (props) => {
             <Button
                 title="Search"
                 onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)} />
-            <FlatList
+            <FlatListMechanics
                 data={mechanics}
                 onItemPressed={onPress}
             />
-
         </View>
     )
 
