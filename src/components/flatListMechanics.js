@@ -1,15 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
+import ListItemMechanics from './listItemMechanics';
 
-import ListItem from './listItem';
-
-const flatList = props => {
+const flatListMechanics = props => {
+    const { data } = props;
+    
     return <FlatList
         style={styles.listContainer}
-        data={props.mechanics}
+        data={data}
         renderItem={(info) => (
-            <ListItem
-                value={info.item}
+            <ListItemMechanics
+                value={info}
                 onItemPressed={() => props.onItemPressed(info.item)}
             />
         )} />;
@@ -21,4 +22,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default flatList;
+export default flatListMechanics;

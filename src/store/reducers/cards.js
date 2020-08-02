@@ -1,18 +1,24 @@
-import { UPDATE_CARDS } from '../actions/actionsTypes';
+import { UPDATE_CARDS, ALL_CARDS } from '../actions/actionTypes';
 
 const initialState = {
-    cards: [999],
+    cards: [],
+    allCards: [],
 };
 
 const reducer = (state = initialState, action) => {
-    console.log("****", action.type);
     switch (action.type) {
         case UPDATE_CARDS:
             return {
                 ...state,
+                cards: action.cards
             };
+        case ALL_CARDS:
+            return {
+                ...state,
+                allCards: action.allCards,
+            }
         default:
-            return [];
+            return state;
     }
 };
 

@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, Button, ActivityIndicator, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { updateCards } from '../store/actions/index';
-import FlatList from '../components/flatList';
+import FlatListMechanics from '../components/flatListMechanics';
+import { updateCards, saveAllCards } from '../store/actions/index';
+import { SCREEN } from '../Utilities/Text';
 
-const MechanicsListScreen = ( props ) => {
-    const [cards1, setCards] = useState([]);
+const MechanicsListScreen = (props) => {
+    const [cards, setCards] = useState([]);
     const [mechanics, setMechanics] = useState([]);
+    const [showSpinner, setShowSpinner] = useState(true);
+    const [showSplashScreen, setSplashScreen] = useState(true);
+
     let tempCards = [];
 
-    useEffect(() => {
+    useEffect(() => { 
         async function sencron() {
+            setTimeout(function(){  
+                setSplashScreen(false);  
+              }, 8000); 
             await getCards();
             await convertData();
         }
@@ -37,10 +44,11 @@ const MechanicsListScreen = ( props ) => {
         }
     }
 
+    // Finding items that has mechanics item
     const convertData = () => {
         let tempCardList = [];
         let tempMechanics = [];
-        console.log("convertData")
+
         for (let i = 0; i < tempCards.length; i++) {
             for (let j = 0; j < tempCards.length; j++) {
                 if (tempCards[i][j] != null && tempCards[i][j].mechanics != null) {
@@ -48,49 +56,67 @@ const MechanicsListScreen = ( props ) => {
                     for (let k = 0; k < tempCards[i][j].mechanics.length; k++) {
                         tempMechanics.push(tempCards[i][j].mechanics[k].name);
                     }
-                    // temp.push(tempCards[i][j]);
-                    // console.log(tempCards[i][j])
                 }
             }
         }
 
-        // for (let i = 0; i < temp.length; i++) {
-        //     for (let j = 0; j < temp.mechanics.length; j++) {
-
-        //     }      
-        // }
         let uniqueMechanics = [...new Set(tempMechanics)]
-        // console.log(uniqueCardList)
         setCards(tempCardList);
+        props.onSaveAllCards(tempCardList);
         setMechanics(uniqueMechanics);
-        // console.log(temp)
+        setShowSpinner(false);
     }
 
     const onPress = (item) => {
         let selectedItem = [];
-        console.log(item)
-        for (let i = 0; i < cards1.length; i++) {
-            if (cards1[i] != null && cards1[i].mechanics != null) {
-                for (let j = 0; j < cards1[i].mechanics.length; j++) {
-                    if (cards1[i].mechanics[j].name === item) {
-                        selectedItem.push(cards1[i]);
+        
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i] != null && cards[i].mechanics != null) {
+                for (let j = 0; j < cards[i].mechanics.length; j++) {
+                    if (cards[i].mechanics[j].name === item) {
+                        selectedItem.push(cards[i]);
                     }
                 }
             }
         }
-        console.log(selectedItem)
+
+        props.navigation.navigate(SCREEN.CARD_LIST);
         props.onUpdateCards(selectedItem)
-        // navigation.navigate('CardsListScreen')
-        console.log(props)
     }
 
-    return (
-        <View style={styles.container}>
-            <FlatList
-                mechanics={mechanics}
+    const Splash_Screen = (  
+        <View style={styles.SplashScreen_RootView}> 
+        <Text style={{textAlign: 'center', top: 30}}>Data Is Loading...</Text> 
+            <View style={styles.SplashScreen_ChildView}>  
+                  <Image source={{uri:'https://homepages.cae.wisc.edu/~ece533/images/watch.png'}}  
+               style={{width:'100%', height: '100%', resizeMode: 'contain'}} />  
+           </View>  
+        </View> )  
+
+    const flatList = (
+        <View style={{width: '100%'}}>
+            <Button
+                title="Search"
+                onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)} />
+            <FlatListMechanics
+                data={mechanics}
                 onItemPressed={onPress}
             />
         </View>
+    )
+
+    const spinner = (
+        <View style={{ height: '100%', top: '40%' }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+    )
+
+    let show = showSpinner ? spinner : flatList;
+
+    return (
+        <>
+            { showSplashScreen ? Splash_Screen : show }
+        </>
     );
 };
 
@@ -106,14 +132,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-      cards: state.cards.cards,
+        cards: state.cards.cards,
+        allCards: state.cards.allCards,
     };
-  };
-  
-  const mapDispatchToProps = dispatch => {
+};
+
+const mapDispatchToProps = dispatch => {
     return {
-      onUpdateCards: (cards) => dispatch(updateCards(cards)),
+        onUpdateCards: (name) => dispatch(updateCards(name)),
+        onSaveAllCards: (value) => dispatch(saveAllCards(value))
     };
-  };
-  
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(MechanicsListScreen);

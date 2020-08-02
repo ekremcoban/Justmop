@@ -1,1 +1,1 @@
-export { updateCards } from './cards'
+export { updateCards, saveAllCards } from './cards';
