@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
 import FlatList from '../components/flatList';
 import { updateCards, saveAllCards } from '../store/actions/index';
 import { SCREEN } from '../Utilities/Text';
 
-const MechanicsListScreen = ( props ) => {
+const MechanicsListScreen = (props) => {
     const [cards, setCards] = useState([]);
     const [mechanics, setMechanics] = useState([]);
+    const [showSpinner, setShowSpinner] = useState(true);
+
     let tempCards = [];
 
     useEffect(() => {
@@ -65,6 +67,7 @@ const MechanicsListScreen = ( props ) => {
         setCards(tempCardList);
         props.onSaveAllCards(tempCardList);
         setMechanics(uniqueMechanics);
+        setShowSpinner(false);
         // console.log(temp)
         console.log(uniqueMechanics)
     }
@@ -86,15 +89,30 @@ const MechanicsListScreen = ( props ) => {
         props.onUpdateCards(selectedItem)
     }
 
-    return (
-        <View style={styles.container}>
-        <Button 
-            title="Search" 
-            onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)}/>
+    const flatList = (
+        <View style={{width: '100%'}}>
+            <Button
+                title="Search"
+                onPress={() => props.navigation.navigate(SCREEN.CARD_SEARCH)} />
             <FlatList
                 data={mechanics}
                 onItemPressed={onPress}
             />
+
+        </View>
+    )
+
+    const spinner = (
+        <View style={{ height: '100%', top: '40%' }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+    )
+
+    let show = showSpinner ? spinner : flatList;
+
+    return (
+        <View>
+            {show}
         </View>
     );
 };
@@ -111,16 +129,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-      cards: state.cards.cards,
-      allCards: state.cards.allCards,
+        cards: state.cards.cards,
+        allCards: state.cards.allCards,
     };
-  };
-  
-  const mapDispatchToProps = dispatch => {
+};
+
+const mapDispatchToProps = dispatch => {
     return {
-      onUpdateCards: (name) => dispatch(updateCards(name)),
-      onSaveAllCards: (value) => dispatch(saveAllCards(value))
+        onUpdateCards: (name) => dispatch(updateCards(name)),
+        onSaveAllCards: (value) => dispatch(saveAllCards(value))
     };
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(MechanicsListScreen);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MechanicsListScreen);
