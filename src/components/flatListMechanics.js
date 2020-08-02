@@ -3,9 +3,11 @@ import { StyleSheet, FlatList } from 'react-native';
 import ListItemMechanics from './listItemMechanics';
 
 const flatListMechanics = props => {
+    const { data } = props;
+    
     return <FlatList
         style={styles.listContainer}
-        data={props.data}
+        data={data}
         renderItem={(info) => (
             <ListItemMechanics
                 value={info}

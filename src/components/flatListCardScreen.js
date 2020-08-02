@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import ListItem from './listItemCardScreen';
 
-const flatListCardScreen = props => {
+const flatListCardScreen = ({ data }) => {
     return <FlatList
         style={styles.listContainer}
-        data={props.data}
+        data={data}
         renderItem={(info) => (
             <ListItem
                 value={info}

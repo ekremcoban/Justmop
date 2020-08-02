@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const listItemMechanics = (props) => {
+    const { value } = props;
+    
     return (
         <TouchableOpacity onPress={props.onItemPressed}>
             <View style={styles.listItem}>
-                <Text>{props.value.item}</Text>
+                <Text>{value.item}</Text>
             </View>
         </TouchableOpacity>
     )

@@ -3,16 +3,16 @@ import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import FlatList from '../components/flatListCardScreen';
 import DelayInput from "react-native-debounce-input";
 
-const CardSearchScreen = (props) => {
+const CardSearchScreen = () => {
     const inputRef = createRef();
     const [value, setValue] = useState(null);
     const [result, setResult] = useState([]);
     const [showSpinner, setShowSpinner] = useState(false);
 
     const getCards = async (name) => {
-        console.log("getCards")
         let tempCards = [];
         setShowSpinner(true);
+
         const response = await fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/search/" + name, {
             "method": "GET",
             "headers": {
@@ -37,6 +37,7 @@ const CardSearchScreen = (props) => {
         }
     }
 
+    // for textinput
     const mySetValue = (text) => {
         setValue(text);
         getCards(text);
