@@ -9,7 +9,6 @@ const flatListCardScreen = props => {
         renderItem={(info) => (
             <ListItem
                 value={info}
-                onItemPressed={() => props.onItemPressed(info.item)}
             />
         )} />;
 };

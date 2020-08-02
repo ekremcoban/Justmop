@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const listItemCardScreen = (props) => {console.log(props)
     return (
-        <TouchableOpacity onPress={props.onItemPressed}>
+        <TouchableOpacity>
             <View style={styles.listItem}>
                 <Text>{props.value.item.name}</Text>
             </View>

@@ -100,9 +100,9 @@ const MechanicsListScreen = (props) => {
     let show = showSpinner ? spinner : flatList;
 
     return (
-        <View>
+        <>
             {show}
-        </View>
+        </>
     );
 };
 
